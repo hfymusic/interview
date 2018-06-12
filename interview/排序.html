@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>排序</title>
+</head>
+<body>
+  <script>
+    // 1.快速排序
+    function quickSort(arr){
+      if(arr.length <= 1) return arr;
+
+      var pivotIndex = Math.floor(arr.length/2); // 基准位置(理论上可以任意选取)
+      var pivot = arr.splice(pivotIndex, 1)[0]; // 基准数
+      var left = [];
+      var right = [];
+      for(var i = 0; i < arr.length; i++){
+        
+      }
+    }
+    // 2.选择排序
+    function selectSort(arr){
+      var len = arr.length;
+      var minIndex, tmp;
+      for(var i = 0; i < len-1; i++){
+        minIndex = i;
+        for(var j = i+1; j < len; j++){
+          if(arr[j] < arr[minIndex]){
+            minIndex = j;
+          }
+        }
+        tmp = arr[i];
+        arr[i] = arr[minIndex];
+        arr[minIndex] = tmp;
+      }
+      return arr;
+    }
+    // 冒泡排序
+    function bubbleSort(arr){
+      var len = arr.length;
+      if(len <= 1) return arr;
+      for(var i = 0; i < len; i++){
+        for(var j = 0; j < len - 1; j++){
+          if(arr[j] > arr[j+1]){
+            var tmp = arr[j+1];
+            arr[j+1] = arr[j];
+            arr[j] = tmp;
+          }
+        }
+      }
+      return arr;
+    }
+    
+  </script>
+</body>
+</html>
