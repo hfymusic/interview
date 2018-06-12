@@ -256,3 +256,46 @@
     4.波兰式和逆波兰式
         理论：http://www.cnblogs.com/chenying99/p/3675876.html
         源码：https://github.com/Tairraos/rpn.js/blob/master/rpn.js
+
+十、渲染机制
+    1.什么是 DOCTYPE 及作用
+        DTD(document type definition，文档类型定义)是一系列的语法规则，用来定义XML或(X)HTML的文件类型。浏览器会使用它来判断文档类型，决定使用何种协议来解析，以及切换浏览器模式(DTD就是告诉浏览器我是什么文档类型，浏览器根据这个判断需要用什么浏览器引擎来解析渲染)。
+        DOCTYPE是用来声明文档类型和DTD规范的，一个主要的用途便是文件的合法性验证。如果文件代码不合法，那么浏览器解析时便会出一些差错(DOCTYPE就是直接告诉浏览器当前的文档是哪个DTD，也就是哪个文档类型)。
+
+        追问：常见的DOCTYPE有哪些？HTML5的DOCTYPE如何写？
+        HTML5：<!DOCTYPE html>
+        HTML4.01 Strict 该DTD包含所有HTML元素和属性，但不包括展示性和弃用的元素(比如font)
+        HTML4.01 Transitional 该DTD包含所有HTML元素和属性，包括展示性和弃用元素(比如font)
+    
+    2.浏览器渲染过程
+
+    3.重排 Reflow
+    4.重绘 Repaint
+    5.布局 Layout
+十一、JS机制
+十二、页面性能
+    题目：提升页面性能的方法有哪些？
+    1.资源压缩合并，并减少HTTP请求
+    2.非核心代码异步加载 ==> 异步加载的方式 ==> 异步加载的区别
+    3.利用浏览器缓存 ==> 缓存的分类 ==> 缓存的原理
+    4.使用CDN
+    5.预解析DNS
+        <meta http-equiv="x-dns-prefetch-control" content="on">
+        <link rel="dns-prefetch" href="//host_name_to_prefetch.com">
+
+十三、错误监控
+    两种问法：如何监控JS错误？如何保证你的产品质量？
+    1.前端错误的分类
+        (1)即时运行错误：代码错误
+        (2)资源加载错误
+
+    2.错误的捕获方式
+        即时运行错误的捕获方式：
+            (1) try...catch   
+            (2)window.onerror(只能捕获即时运行错误，不能捕获资源加载错误。资源加载错误不会冒泡，所以这个方法监测不到)
+        资源加载错误的捕获方式：
+            (1)object.onerror(资源加载错误不会冒泡，但是捕获阶段可以监控到，所以第三种方法才可行)
+            (2)performance.getEntries()(获取已加载资源的加载时长，未加载成功不会在这里出现，这是一种间接捕获资源加载错误的方法)
+            (3)Error事件捕获
+        延伸：跨域的js运行错误可以捕获吗，错误提示什么，应该怎么处理？
+    3.上报错误的基本原理
