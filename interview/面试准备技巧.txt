@@ -223,6 +223,12 @@
 
 
 六、面向对象
+    1.类与实例
+        (1)类的声明
+        (2)生成实例
+    2.类与继承
+        (1)如何实现继承
+        (2)继承的几种方式
 
 
 七、通信
@@ -298,15 +304,80 @@
         HTML4.01 Strict 该DTD包含所有HTML元素和属性，但不包括展示性和弃用的元素(比如font)
         HTML4.01 Transitional 该DTD包含所有HTML元素和属性，包括展示性和弃用元素(比如font)
     
-    2.浏览器渲染过程
+    2.浏览器渲染过程 (看图(../img/渲染机制--浏览器渲染过程.png))
+        浏览器拿到 HTML 和 CSS 要干什么？
+        (1) HTML 经过 HTML Parser(HTML解析器) 转成 DOM Tree(即DOM树)；CSS 经过 CSS 规则和 CSS Parser(CSS解析器) 转成 CSSOM Tree；
+            
+        (2)之后这两棵树之间进行整合(Attachment)，形成一棵Render Tree，此时类似于告诉浏览器这个地方要渲染的一棵树的结构已经基本出来了；
+           Render Tree 不包含 HTML 的具体内容，它也不知道这个具体位置是什么，也就是在 Layout 之前，有一个div，Render Tree并不知道这个div的具体位置；
+           通过 Layout 才可以具体知道要显示的这些 DOM 具体的宽高、颜色都在 Render Tree 呈现出来；
+
+        (3)最后开始 Painting，浏览器通过 GUX 开始画图，把我们的内容基本呈现出来；最后 Display 就是大家在浏览器上能看到整个页面效果。
 
     3.重排 Reflow
-    4.重绘 Repaint
+        (1)定义：DOM结构中各个元素都有自己的盒子(模型)，这些都需要浏览器根据各种样式来计算，并根据计算结果将元素放到它该出现的位置，这个过程称为 Reflow。
+
+        (2)触发Reflow的几种方式：
+            (a)当你增加、删除、修改DOM节点时，会导致 Reflow 或 Repaint；
+            (b)当你移动DOM的位置，或是搞个动画的时候；
+            (c)当你修改CSS样式的时候；
+            (d)当你 Resize 窗口的时候(移动端没有这个问题)，或是滚动的时候；
+            (e)当你修改网页的默认字体时(这样做会有一些性能问题，或者是大家能看到的那种闪)
+        如何尽量避免Reflow？
+
+    4.重绘 Repaint(Repaint无法避免，但是可以最大程度的降低Repaint)
+        (1)定义：当各种盒子的位置、大小以及其他属性，例如颜色、字体大小等都确定下来后，浏览器于是便把这些元素都按照各自的特性绘制了一遍，于是页面的内容出现了，这个过程称为 Repaint。
+        (2)触发Repaint的几种方式：DOM改动、CSS改动
+        如何避免最小程度的Repaint？
+
     5.布局 Layout
 
 
 十一、JS机制
+    1.运行机制类
+        console.log(1);
+        setTimeout(function(){
+          console.log(3);
+        },0);
+        console.log(2);
 
+        问：最后的打印顺序是什么？
+        答：1,2,3。JS是单线程的，即JS在同一时间只能做一件事。任务队列，同步任务和异步任务。setTimeout就是一个异步任务，异步任务要挂起；console.log，在script中的语句叫同步任务，
+
+
+        console.log('A');
+        while(true){
+
+        }
+        console.log('B');
+        问：最后打印出什么？
+        答：A。while是一个同步任务，它会不断循环，所以B不会被执行。
+
+
+        console.log('A');
+        setTimeout(function(){
+          console.log('B');
+        },0);
+        while(true){
+
+        }
+        问：最后打印出什么？
+        答：A。在同步任务(while)执行完之前，任何的异步任务都不会响应。
+
+
+        for(var i = 0; i < 4; i++){
+          setTimeout(function(){
+            console.log(i);
+          }, 1000);
+        }
+        问：console.log会输出几次？每次的执行结果是什么？
+        答：for是一个同步任务，for循环在执行的过程中，遇到setTimeout，时间间隔是1000，定时器会记住这个语句，但是它没有立即去执行。
+            也就是说for循环在执行过程中，并没有真正的放到任务队列中去，(异步任务的放入时间和执行时间)。
+        
+        (1)如何理解JS的单线程？
+        (2)什么是任务队列？
+        (3)什么是 Event Loop？
+        
 
 十二、页面性能
     题目：提升页面性能的方法有哪些？
