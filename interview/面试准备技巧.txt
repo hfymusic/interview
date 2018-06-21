@@ -333,60 +333,93 @@
     5.布局 Layout
 
 
-十一、JS机制
-    1.运行机制类
-        console.log(1);
-        setTimeout(function(){
-          console.log(3);
-        },0);
-        console.log(2);
+十一、JS机制(运行机制类)
+    console.log(1);
+    setTimeout(function(){
+      console.log(3);
+    },0);
+    console.log(2);
 
-        问：最后的打印顺序是什么？
-        答：1,2,3。JS是单线程的，即JS在同一时间只能做一件事。任务队列，同步任务和异步任务。setTimeout就是一个异步任务，异步任务要挂起；console.log，在script中的语句叫同步任务，
-
-
-        console.log('A');
-        while(true){
-
-        }
-        console.log('B');
-        问：最后打印出什么？
-        答：A。while是一个同步任务，它会不断循环，所以B不会被执行。
+    问：最后的打印顺序是什么？
+    答：1,2,3。JS是单线程的，即JS在同一时间只能做一件事。任务队列，同步任务和异步任务。setTimeout就是一个异步任务，异步任务要挂起；console.log，在script中的语句叫同步任务，
 
 
-        console.log('A');
-        setTimeout(function(){
-          console.log('B');
-        },0);
-        while(true){
+    console.log('A');
+    while(true){
 
-        }
-        问：最后打印出什么？
-        答：A。在同步任务(while)执行完之前，任何的异步任务都不会响应。
+    }
+    console.log('B');
+    问：最后打印出什么？
+    答：A。while是一个同步任务，它会不断循环，所以B不会被执行。
 
 
-        for(var i = 0; i < 4; i++){
-          setTimeout(function(){
-            console.log(i);
-          }, 1000);
-        }
-        问：console.log会输出几次？每次的执行结果是什么？
-        答：for是一个同步任务，for循环在执行的过程中，遇到setTimeout，时间间隔是1000，定时器会记住这个语句，但是它没有立即去执行。
-            也就是说for循环在执行过程中，并没有真正的放到任务队列中去，(异步任务的放入时间和执行时间)。
-        
-        (1)如何理解JS的单线程？
-        (2)什么是任务队列？
-        (3)什么是 Event Loop？
+    console.log('A');
+    setTimeout(function(){
+      console.log('B');
+    },0);
+    while(true){
+
+    }
+    问：最后打印出什么？
+    答：A。在同步任务(while)执行完之前，任何的异步任务都不会响应。
+
+
+    for(var i = 0; i < 4; i++){
+      setTimeout(function(){
+        console.log(i);
+      }, 1000);
+    }
+    问：console.log会输出几次？每次的执行结果是什么？
+    答：for是一个同步任务，for循环在执行的过程中，遇到setTimeout，时间间隔是1000，定时器会记住这个语句，但是它没有立即去执行。
+        也就是说for循环在执行过程中，并没有真正的放到任务队列中去，(异步任务的放入时间和执行时间)。
+    
+    1.如何理解JS的单线程？
+    2.什么是任务队列？
+    3.什么是 Event Loop？
+    4.异步任务
+        (1)setTimeout和setInterval
+        (2)DOM事件：我们在执行DOM事件的时候，要用addEventListener注册一个类型的事件，那么这个浏览器会有一个单联的模块去接收这个东西，
+                    当这个事件被触发的时候，也就是监听GUI线程，监听用户点了某个按钮，这个时候要触发这个事件，那么浏览器的某个模块就把
+                    我们注册的那个函数体扔到异步队列中。如果浏览器现在的执行站是空的，它就去任务队列中拿到这个函数体，开始执行，也就是
+                    我们注册事件中的那个响应函数。JS是单线程的，浏览器有同步任务在执行的时候，你点什么按钮，它也不会去读那个任务队列，
+                    所以它就根本不会执行，你看到的就是浏览器卡住了。
+
+        (3)ES6中的Promise
+
+    总结：(1)理解JS的单线程的概念
+         (2)理解任务队列
+         (3)理解Event Loop
+         (4)理解哪些语句会放入异步任务队列
+         (5)理解语句放入异步任务队列的时机
         
 
 十二、页面性能
     题目：提升页面性能的方法有哪些？
     1.资源压缩合并，并减少HTTP请求
     2.非核心代码异步加载 ==> 异步加载的方式 ==> 异步加载的区别
+        (1)异步加载的方式
+            (a)动态脚本加载
+            (b)defer
+            (c)async
+        (2)异步加载的区别
+            (a)defer 是在HTML解析完之后才会执行，如果是多个，按照加载的顺序依次执行
+            (b)async是在加载完之后立即执行，如果是多个，执行顺序和加载顺序无关
+
     3.利用浏览器缓存 ==> 缓存的分类 ==> 缓存的原理
+        (1)缓存的分类
+            (a)强缓存
+                Expires         Expires:Thu,21 Jan 2017 23:39:02 GMT
+                Cache-Control   Cache-Control:max-age=3600
+
+            (b)协商缓存
+                Last-Modified   If-Modified-Since   Etag    If-None-Match
+        (2)缓存的原理
     4.使用CDN
     5.预解析DNS
         <meta http-equiv="x-dns-prefetch-control" content="on">
+        页面中所有的a标签，在一些高级浏览器中是默认打开DNS预解析的，也就是不用加下面那段代码a标签也可以实现DNS预解析；
+        但是如果这个页面是 HTTPS 协议，很多浏览器是默认关闭DNS预解析的。所以该段代码是强制打开DNS预解析。
+
         <link rel="dns-prefetch" href="//host_name_to_prefetch.com">
 
 十三、错误监控
