@@ -407,13 +407,25 @@
 
     3.利用浏览器缓存 ==> 缓存的分类 ==> 缓存的原理
         (1)缓存的分类
-            (a)强缓存
-                Expires         Expires:Thu,21 Jan 2017 23:39:02 GMT
-                Cache-Control   Cache-Control:max-age=3600
+            (a)强缓存(不管问不问，直接拿过来用)
+                Expires         Expires:Thu,21 Jan 2017 23:39:02 GMT    (绝对时间)
+                Cache-Control   Cache-Control:max-age=3600              (相对时间)
+                如果这两个时间都下发，以后者为准，即Cache-Control，这是规定。
 
-            (b)协商缓存
-                Last-Modified   If-Modified-Since   Etag    If-None-Match
+            (b)协商缓存(浏览器发现本地有这个资源副本，但是又不确定用不用它，所以先向服务器问一下，该资源要不要用，是否已过期)
+                当强缓存失效，过期了，浏览器不知道这个资源是否还能用，所以会向服务器发送If-Modified-Since确认，
+                其中 If-Modified-Since 的值是上次请求中服务器返回的 Last-Modified 的值。
+                Last-Modified       服务器下发的时间
+                If-Modified-Since   客户端携带的时间(这两个时间一样，是方便服务器做比较)
+
+                对比哈希值
+                Etag                服务器下发的时候，会给 Etag 值，当过了强缓存的时间，浏览器再向服务器请求询问该资源是否还可以用，
+                                    浏览器会在HTTP中加 If-None-Match 值，该值与 Etag 值相同。
+                If-None-Match
+
         (2)缓存的原理
+            浏览器缓存说的就是这个资源文件在浏览器中存在的备份，也可以理解为副本(放在电脑磁盘上)。
+            浏览器下次请求的时候，相当于是直接从磁盘读取，而不会再向服务器请求该资源的地址。
     4.使用CDN
     5.预解析DNS
         <meta http-equiv="x-dns-prefetch-control" content="on">
@@ -437,4 +449,27 @@
             (2)performance.getEntries()(获取已加载资源的加载时长，未加载成功不会在这里出现，这是一种间接捕获资源加载错误的方法)
             (3)Error事件捕获
         延伸：跨域的js运行错误可以捕获吗，错误提示什么，应该怎么处理？
+        答：可以捕获。错误信息是 Script error，因为已经跨域，出错文件拿不到，出错行号和列号都是0，错误详情null。
+            1)在script标签增加 crossorigin属性(客户端)
+            2)设置js资源响应头 Access-Control-Allow-Origin: *(服务端，*号也可以换成指定的域名)
+
     3.上报错误的基本原理
+        (1)采用Ajax通信的方式上报
+        (2)利用Image对象上报    (new Image()).src = 'http://baidu.com/tesjk?r=tksjk';
+
+
+十四、业务能力
+    1.业务能力(主动描述或被动询问)
+        (1)我做过什么业务
+        (2)负责的业务有什么业绩
+        (3)使用了什么技术方案
+        (4)突破了什么技术难点
+        (5)遇到了什么问题
+        (6)最大的收获是什么
+    2.团队协作能力(主动描述)
+        (1)
+        (2)
+        (3)
+    3.事务推动能力
+    4.带人能力
+    5.其他能力
