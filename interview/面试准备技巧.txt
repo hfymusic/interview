@@ -208,7 +208,8 @@
     3.instanceof的原理
         看图(../img/原型链4--instanceof.png)
         instanceof 的原理就是来判断实例对象的 __proto__ 属性和构造函数的 prototype 属性，判断是不是同一个引用(是否引用同一个地址)；
-        当原型对象上还有它自己的 __proto__ ，有它自己的构造函数的原型对象，依次类推往上走，在 instanceof 判断的时候，只要在这条原型链上，构造函数都是这个实例的一个构造函数，这样说实际上不严谨，但是 instanceof 都会返回true。
+        当原型对象上还有它自己的 __proto__ ，有它自己的构造函数的原型对象，依次类推往上走，在 instanceof 判断的时候，
+        只要在这条原型链上，构造函数都是这个实例的一个构造函数，这样说实际上不严谨，但是 instanceof 都会返回true。
 
         用 constructor 来判断实例是哪个构造函数的实例。
         实例.__proto__.constructor === M  true
