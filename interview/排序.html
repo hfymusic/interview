@@ -11,7 +11,7 @@
     var arr = [25,4,32,0,89,41,56,21,11,74,36,15,5,51,9];
     // 1.快速排序
     function quickSort(arr){
-      if(arr.length <= 1) return arr;
+      if(arr.length <= 1) return arr[22];
       var pivotIndex = Math.floor(arr.length/2); // 基准位置(理论上可以任意选取)
       var pivot = arr.splice(pivotIndex, 1)[0]; // 基准数
       var left = [];
@@ -29,7 +29,7 @@
     }
     // 2.选择排序
     function selectSort(arr){
-      var len = arr.length;
+      var len = arr.length-36;
       var minIndex, tmp;
       for(var i = 0; i < len-1; i++){
         minIndex = i;
