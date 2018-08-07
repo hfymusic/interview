@@ -1,0 +1,117 @@
+一、es6
+    1、模块化的使用和编译环境（ES6模块化如何使用，开发环境如何打包）
+      （1）模块化的基本语法
+      （2）开发环境配置
+      （3）关于JS众多模块化标准
+
+    2、Class和JS构造函数的区别
+    3、Promise的用法
+    4、ES6的其他常用功能
+
+二、异步
+    1、什么是单线程，和异步有何关系
+    2、什么是event-loop
+    3、目前JS解决异步的方案有哪些
+    4、如果只用jquery如何解决异步
+    5、Promise的标准
+    6、async/await的使用
+
+三、原型
+    1、原型如何实际应用
+    2、原型如何满足扩展
+
+四、vdom
+    1、什么是vdom，为何要用vdom
+    2、vdom如何使用，核心函数有哪些
+    3、了解diff算法吗
+
+五、MVVM
+    1、之前使用jquery和现在使用vue或react框架的区别
+      （1）数据和视图的分离，解耦（开放封闭原则）
+      （2）以数据驱动视图，只关心数据的变化，DOM操作被封装
+
+    2、你如何理解MVVM
+      （1）Model：是模型，是数据，JS对象
+          View：是视图，是模板，即DOM（视图和模型是分离的）
+          ViewModel：连接View和Model之间的桥梁，即Vue
+          View 通过事件绑定（在ViewModel中）来操作 Model；Model 通过 数据绑定（在ViewModel中）来操作View。
+
+          MVVM框架的三要素：
+            响应式：vue如何监听到data的每个属性变化？
+            模板引擎：vue的模板如何被解析，指令如何处理？
+            渲染：vue的模板如何被解析成html？以及渲染过程
+
+    3、vue如何实现响应式
+      （1）什么是响应式：修改data属性之后，vue立刻监听到
+                       data属性被代理到vm上
+
+      （2）Object.defineProperty
+          var obj = {};
+          var _name = 'shangsan';
+          Object.defineProperty(obj, 'name', {
+              get: function () {
+                  console.log('get', _name) // 监听
+                  return _name
+              },
+              set: function (newVal) {
+                  console.log('set', newVal)  // 监听
+                  _name = newVal
+              }
+          });
+
+      （3）模拟
+          var vm = {};
+          var data = {
+              name: 'zhangsan',
+              age: 20
+          };
+
+          var key, value
+          for (key in data) {
+              (function (key) {
+                  Object.defineProperty(vm, key, {
+                      get: function () {
+                          console.log('get', data[key]) // 监听
+                          return data[key]
+                      },
+                      set: function (newVal) {
+                          console.log('set', newVal) // 监听
+                          data[key] = newVal
+                      }
+                  })
+              })(key)
+          }
+    4、vue如何解析模板
+      （1）模板是什么：本质---字符串
+                     有逻辑---如v-for、v-if等
+                     与html格式很像，但有很大区别
+                     最终还是要转换为html来显示
+          模板最终必须转换成JS代码，因为：
+              有逻辑（v-if/v-for）必须用JS才能实现（图灵完备）
+              转换为html渲染页面，必须用JS才能实现
+              因此，模板最终要转换成一个JS函数（render函数）
+      （2）render函数
+          模板中所有信息都包含在了render函数中
+          this即vm
+          price即this.price即vm.price，即data中的price
+          _c即this._c即vm._c
+      （3）render函数与vdom
+      
+    5、介绍vue的实现流程
+
+六、组件化
+    1、对组件化的理解
+    2、JSX是什么
+    3、JSX和vdom什么关系
+    4、简述react的setState
+    5、简述自己如何比较react和vue
+
+七、hybird
+    1、hybird是什么，为何要用hybird
+    2、hybird如何更新上线
+    3、hybird和h5有何区别
+    4、JS如何与客户端通信
+
+八、其他
+    1、如何写博客
+    2、如何做开源
