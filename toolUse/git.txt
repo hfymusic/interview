@@ -1,0 +1,23 @@
+一、git处理冲突
+    场景：git pull 拉取代码提示 Please commit your changes or stash them before you merge
+    解决方法：1、commit（先提交文件再手动处理冲突）
+                git add .
+                git commit -m ''
+                git pull
+                到此需手动处理冲突，然后再重新 git push
+             2、stash（先备份当前工作区）
+                git stash
+                git pull
+                git stash pop
+
+
+二、git分支管理
+    1、创建并切换分支：     git checkout -b 分支名
+       相当于以下两条命令   git branch 分支名
+                          git checkout 分支名
+
+    2、查看当前分支：       git branch
+    3、合并指定分支到当前分支：   git merge 分支名
+    4、删除分支：           git branch -d 分支名
+    5、查看分支合并图：     git log --graph
+                          git log --graph --pretty=oneline --abbrev-commit
