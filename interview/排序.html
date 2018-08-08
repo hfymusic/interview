@@ -8,8 +8,14 @@
 </head>
 <body>
   <script>
+    // ,21,11,74,36,15,5,51,9
     var arr = [25,4,32,0,89,41,56,21,11,74,36,15,5,51,9];
+    var num = 0;
+
     // 1.快速排序
+    // (1)先从数列中取出一个数作为“基准”
+    // (2)分区过程：将比这个“基准”大的数全放到“基准”的右边，小于或等于“基准”的数全放到“基准”的左边
+    // (3)再对左右区间重复第二步，直到各区间只有一个数
     function quickSort(arr){
       if(arr.length <= 1) return arr;
       var pivotIndex = Math.floor(arr.length/2); // 基准位置(理论上可以任意选取)
@@ -27,15 +33,19 @@
 
       return quickSort(left).concat([pivot],quickSort(right));
     }
+
     // 2.选择排序
+    // (1)在未排序序列中找到最小（大）元素，存放到排序序列的起始位置
+    // (2)从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾
+    // (3)重复第二步，直到所有元素均排序完毕
     function selectSort(arr){
       var len = arr.length;
       var minIndex, tmp;
       for(var i = 0; i < len-1; i++){
         minIndex = i;
         for(var j = i+1; j < len; j++){
-          if(arr[j] < arr[minIndex]){
-            minIndex = j;
+          if(arr[j] < arr[minIndex]){  // 寻找最小的数
+            minIndex = j;              // 将最小数的索引保存
           }
         }
         tmp = arr[i];
@@ -44,6 +54,32 @@
       }
       return arr;
     }
+
+    // 3希尔排序
+    // (1)选择一个增量序列 t1，t2，……，tk，其中 ti > tj, tk = 1
+    // (2)按增量序列个数 k，对序列进行 k 趟排序
+    // (3)每趟排序，根据对应的增量 ti，将待排序列分割成若干长度为 m 的子序列，分别对各子表进行直接插入排序。
+    //    仅增量因子为 1 时，整个序列作为一个表来处理，表长度即为整个序列的长度
+    function shellSort(arr){
+      var len = arr.length,
+          tmp,
+          gap = 1;
+      while(gap < len/3){ // 动态定义间隔序列
+        gap = gap*3+1;
+      }
+      for(gap; gap > 0; gap = Math.floor(gap/3)){
+        for(var i = gap; i < len; i++){
+          tmp = arr[i];
+          for(var j = i-gap; j >= 0 && arr[j] > tmp; j-= gap){
+            arr[j+gap] = arr[j];
+          }
+          arr[j+gap] = tmp;
+        }
+      }
+      return arr;
+    };
+
+
     // 冒泡排序
     function bubbleSort(arr){
       var len = arr.length;
